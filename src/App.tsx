@@ -1,16 +1,18 @@
-import images from "./services/image-service";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import Gallery from "./components/Gallery";
 
 const App = () => {
+  const [images, setImages] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:8000/api/images/")
+      .then((res) => setImages(res.data))
+      .catch((err) => console.log(err));
+  }, []);
   return (
-    <div>
-      <div style={{ maxWidth: "500px" }} className="container text-center">
-        <h2>Gallery🙌</h2>
-        <div className="row">
-          {images.map((image) => (
-            <img className="col-md-4 p-1" src={image.url} alt="" />
-          ))}
-        </div>
-      </div>
+    <div style={{ maxWidth: "560px" }} className="text-center container">
+      <Gallery images={images} />
     </div>
   );
 };
