@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Gallery from "./components/Gallery";
+import FileUploader from "./components/FileUploader";
 
 const App = () => {
   const [images, setImages] = useState([]);
@@ -12,6 +13,7 @@ const App = () => {
   }, []);
   return (
     <div style={{ maxWidth: "560px" }} className="text-center container">
+      <FileUploader />
       <Gallery images={images} />
     </div>
   );
