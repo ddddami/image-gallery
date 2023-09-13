@@ -1,3 +1,27 @@
 body {
     padding: 20px
 }
+
+.x-btn {
+    background-color: rgb(35, 31, 32);
+    color: white;
+}
+.x-btn:hover {
+    background-color: rgb(35, 31, 32);
+    color: white;
+
+}
+
+.x-input{
+    
+    border: 2px solid rgb(35, 31, 32);
+}
+.x-input:active, .x-input:hover, .x-input:focus {
+    box-shadow: none;
+    border: 2px solid rgb(35, 31, 32);
+
+}
+
+.bg-subtle {
+    background-color: #f3ece6;
+}

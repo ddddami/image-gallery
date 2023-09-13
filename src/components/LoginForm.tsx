@@ -15,15 +15,19 @@ const LoginForm = () => {
           <label className="form-label" htmlFor="email">
             Username
           </label>
-          <input id="email" type="text" className="form-control" />
+          <input id="email" type="text" className="x-input form-control" />
         </div>
         <div className="mb-3">
           <label className="form-label" htmlFor="password">
             Password
           </label>
-          <input id="password" type="password" className="form-control" />
+          <input
+            id="password"
+            type="password"
+            className="x-input form-control"
+          />
         </div>
-        <button className="btn btn-primary" type="submit" onClick={handleLogin}>
+        <button className="btn x-btn" type="submit" onClick={handleLogin}>
           Login
         </button>
       </form>
