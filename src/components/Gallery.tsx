@@ -1,3 +1,5 @@
+import React from "react";
+import { InfiniteData } from "@tanstack/react-query";
 import ImageCard from "./ImageCard";
 
 interface Image {
@@ -6,15 +8,21 @@ interface Image {
 }
 
 interface Props {
-  images: Image[];
+  data: InfiniteData<any>[];
 }
-const Gallery = ({ images }: Props) => {
+const Gallery = ({ data }: any) => {
+  console.log(data);
+
   return (
     <>
       <h2>Gallery🙌</h2>
       <div className="row">
-        {images.map((image) => (
-          <ImageCard key={image.id} image={image} />
+        {data?.pages.map((page, index) => (
+          <React.Fragment key={index}>
+            {page.data.map((image) => (
+              <ImageCard key={image.id} image={image} />
+            ))}
+          </React.Fragment>
         ))}
       </div>
     </>
