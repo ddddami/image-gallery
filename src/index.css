@@ -2,7 +2,7 @@ body {
     padding: 20px
 }
 
-.x-btn {
+.x-btn, .x-btn:disabled {
     background-color: rgb(35, 31, 32);
     color: white;
 }
