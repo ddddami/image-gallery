@@ -1,21 +1,37 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Gallery from "./components/Gallery";
 import FileUploader from "./components/FileUploader";
+import LoginPage from "./pages/LoginPage";
+import imageService from "./services/image-service";
+import userService, { User } from "./services/user-service";
+import { getToken } from "./services/auth-service";
+import { FilePondFile } from "filepond";
+import { Image } from "./services/image-service";
 
 const App = () => {
-  const [images, setImages] = useState([]);
+  const [user, setUser] = useState<User | null>(null);
+  const [images, setImages] = useState<Image[]>([]);
   useEffect(() => {
-    axios
-      .get("http://localhost:8000/api/images/")
+    userService
+      .getUser()
+      .then((res) => setUser(res.data))
+      .catch((ex) => console.log(ex));
+  }, []);
+
+  useEffect(() => {
+    imageService
+      .getAllImages()
       .then((res) => setImages(res.data))
       .catch((err) => console.log(err));
   }, []);
   return (
     <div style={{ maxWidth: "560px" }} className="text-center container">
-      <FileUploader />
+      <FileUploader
+        onImageUploaded={(image: Image) => setImages([image, ...images])}
+      />
       <Gallery images={images} />
     </div>
+    // <LoginPage />
   );
 };
 
