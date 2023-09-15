@@ -8,19 +8,19 @@ import { getToken } from "./services/auth-service";
 import { FilePondFile } from "filepond";
 import { Image } from "./services/image-service";
 
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useIsFetching } from "@tanstack/react-query";
 import apiClient from "./services/api-client";
 
 const App = () => {
   console.log(getToken());
-  // const [user, setUser] = useState<User | null>(null);
-  // const [images, setImages] = useState<Image[]>([]);
-  // useEffect(() => {
-  //   userService
-  //     .getUser()
-  //     .then((res) => setUser(res.data))
-  //     .catch((ex) => console.log(ex));
-  // }, []);
+  const [user, setUser] = useState<User | null>(null);
+  const [images, setImages] = useState<Image[]>([]);
+  useEffect(() => {
+    userService
+      .getUser()
+      .then((res) => setUser(res.data))
+      .catch((ex) => console.log(ex));
+  }, []);
 
   useEffect(() => {
     //   imageService
@@ -29,6 +29,8 @@ const App = () => {
     //     .catch((err) => console.log(err));
     // }, []
   });
+
+  const isFetching = useIsFetching();
 
   const { fetchNextPage, isFetchingNextPage, hasNextPage, data } =
     useInfiniteQuery({
@@ -59,13 +61,15 @@ const App = () => {
         onImageUploaded={(image: Image) => setImages([image, ...images])}
       />
       <Gallery data={data} />
-      <button
-        disabled={isFetchingNextPage || hasNextPage}
-        className="btn btn-primary"
-        onClick={handleFetchNextPage}
-      >
-        Load more...
-      </button>
+      {!isFetching && (
+        <button
+          disabled={isFetchingNextPage || !hasNextPage}
+          className="btn btn-primary"
+          onClick={handleFetchNextPage}
+        >
+          Load more...
+        </button>
+      )}
     </div>
     // <LoginPage />
   );
