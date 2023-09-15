@@ -8,11 +8,13 @@ import { getToken } from "./services/auth-service";
 import { FilePondFile } from "filepond";
 import { Image } from "./services/image-service";
 
+import { useInView } from "react-intersection-observer";
 import { useInfiniteQuery, useIsFetching } from "@tanstack/react-query";
 import apiClient from "./services/api-client";
 
 const App = () => {
   console.log(getToken());
+  const [lastItemRef, inView] = useInView();
   const [user, setUser] = useState<User | null>(null);
   const [images, setImages] = useState<Image[]>([]);
   useEffect(() => {
@@ -49,27 +51,24 @@ const App = () => {
       },
     });
 
-  const handleFetchNextPage = () => {
-    if (hasNextPage) {
+  const [hasFetchedNextPage, setHasFetchedNextPage] = useState(false);
+
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetching && !isFetchingNextPage) {
+      console.log("works");
       fetchNextPage();
+      setHasFetchedNextPage(true); // Set the flag to prevent further calls
     } else {
     }
-  };
+  }, [inView, hasNextPage, isFetching, hasFetchedNextPage]);
+
   return (
     <div style={{ maxWidth: "560px" }} className="text-center container">
       <FileUploader
         onImageUploaded={(image: Image) => setImages([image, ...images])}
       />
       <Gallery data={data} />
-      {!isFetching && (
-        <button
-          disabled={isFetchingNextPage || !hasNextPage}
-          className="btn btn-primary"
-          onClick={handleFetchNextPage}
-        >
-          Load more...
-        </button>
-      )}
+      <div ref={lastItemRef}></div>
     </div>
     // <LoginPage />
   );
