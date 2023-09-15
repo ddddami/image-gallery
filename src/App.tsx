@@ -10,6 +10,8 @@ import { Image } from "./services/image-service";
 
 import { useInView } from "react-intersection-observer";
 import { useInfiniteQuery, useIsFetching } from "@tanstack/react-query";
+import { LineWobble } from "@uiball/loaders";
+
 import apiClient from "./services/api-client";
 
 const App = () => {
@@ -68,6 +70,16 @@ const App = () => {
         onImageUploaded={(image: Image) => setImages([image, ...images])}
       />
       <Gallery data={data} />
+      <div className="d-flex justify-content-center">
+        {data && isFetchingNextPage && (
+          <LineWobble
+            size={80}
+            lineWeight={5}
+            speed={1.75}
+            color="rgb(35, 31, 32)"
+          />
+        )}
+      </div>
       <div ref={lastItemRef}></div>
     </div>
     // <LoginPage />
